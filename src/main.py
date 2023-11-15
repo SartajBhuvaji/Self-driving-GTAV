@@ -20,8 +20,6 @@ PressKey(W)
 time.sleep(5)
 ReleaseKey(W)
 
-
-
 last_time = time.time()
 while(True):
     screen = np.array(ImageGrab.grab(bbox=(0,40,800,640)))
