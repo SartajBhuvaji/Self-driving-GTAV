@@ -5,8 +5,6 @@ import time
 import pyautogui
 from directkeys import PressKey, ReleaseKey, W, A, S, D
 
-
-
 def roi(img, vertices):
     mask = np.zeros_like(img)
     cv2.fillPoly(mask, vertices, 255)
