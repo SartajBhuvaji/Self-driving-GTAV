@@ -3,6 +3,7 @@ from PIL import ImageGrab
 import cv2
 import time
 import pyautogui
+from directkeys import PressKey, ReleaseKey, W, A, S, D
 
 def process_img(original_image):
     # convert to gray
@@ -14,6 +15,11 @@ def process_img(original_image):
 for i in list(range(4))[::-1]:
     print(i+1)
     time.sleep(1)
+
+PressKey(W)
+time.sleep(5)
+ReleaseKey(W)
+
 
 
 last_time = time.time()
