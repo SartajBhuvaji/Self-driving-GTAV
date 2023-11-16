@@ -20,6 +20,7 @@ def draw_lines(img, lines):
         pass
 
 def process_img(original_image):
+<<<<<<< HEAD
     processed_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY) #convert to gray
     processed_img = cv2.Canny(processed_img, threshold1=200, threshold2=300) #edge detection
     #processed_img = cv2.GaussianBlur(processed_img, (3,3), 0) #smoothing
@@ -28,6 +29,17 @@ def process_img(original_image):
 
     #lines = cv2.HoughLinesP(processed_img, 1, np.pi/180, 180, np.array([]), 100, 5) # hough lines -> big lines
     #draw_lines(processed_img,lines) #draw lines
+=======
+    # convert to gray
+    processed_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
+    processed_img = cv2.Canny(processed_img, threshold1=200, threshold2=300)
+    processed_img = cv2.GaussianBlur(processed_img, (3,3), 0)
+    vertices = np.array([[10,500],[10,300],[300,200],[500,200],[800,300],[800,500],], np.int32)
+    processed_img = roi(processed_img, [vertices])
+
+    lines = cv2.HoughLinesP(processed_img, 1, np.pi/180, 180, np.array([]), 100, 5)
+    draw_lines(processed_img,lines)
+>>>>>>> 0aaa0977766ad2db7361b22745f603ddd8b5834e
 
     return processed_img
 
