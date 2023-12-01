@@ -1,0 +1,2 @@
+model_checkpoint_path: "C:\\Local Disk D\\gtav-python\\self-driving_GTAV\\src\\NN\\model.h5"
+all_model_checkpoint_paths: "C:\\Local Disk D\\gtav-python\\self-driving_GTAV\\src\\NN\\model.h5"
