@@ -41,6 +41,7 @@ sd = [0,0,0,0,0,0,0,1,0]
 nk = [0,0,0,0,0,0,0,0,1]
 
 starting_value = 1
+CHUNK_SIZE = 1000
 
 while True:
     #file_name = 'training_data-{}.npy'.format(starting_value)
@@ -118,6 +119,10 @@ def main(file_name, starting_value):
             keys = key_check()
 
             output = keys_to_output(keys)
+
+            #cv2.imshow('window',cv2.resize(screen,(640,360)))
+            #print(output)
+            
             #training_data.append([screen,output])
             df1 = pd.DataFrame([[screen, output]])
             df = df._append(df1, ignore_index=True)
@@ -129,7 +134,7 @@ def main(file_name, starting_value):
                 cv2.destroyAllWindows()
                 break
 
-            if len(df) % 100 == 0:
+            if len(df) % CHUNK_SIZE == 0:
                 df.to_pickle(f"training_data_{starting_value}.pickle")
                 print(f"iteration {starting_value} saved")
                 starting_value += 1
