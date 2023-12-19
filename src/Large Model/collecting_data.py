@@ -95,11 +95,11 @@ def main(file_name, starting_value):
     starting_value = starting_value
     training_data = []
     df = pd.DataFrame()
-    for i in list(range(4))[::-1]:
+    for i in range(4)[::-1]:
         print(i+1)
         time.sleep(1)
 
-    last_time = time.time()
+    #last_time = time.time()
     paused = False
     print('STARTING!!!')
 
@@ -108,7 +108,7 @@ def main(file_name, starting_value):
             
             # 800x600 windowed mode
             screen = grab_screen(region=(0, 40, 800, 640))
-            last_time = time.time()
+            #last_time = time.time()
 
             # resize to something a bit more acceptable for a CNN
             screen = cv2.resize(screen, (480,270))
@@ -127,9 +127,7 @@ def main(file_name, starting_value):
             df1 = pd.DataFrame([[screen, output]])
             df = df._append(df1, ignore_index=True)
 
-            print('loop took {} seconds'.format(time.time()-last_time))
-
-            cv2.imshow('window',cv2.resize(screen,(640,360)))
+            #print('loop took {} seconds'.format(time.time()-last_time))
             if cv2.waitKey(25) & 0xFF == ord('q'):
                 cv2.destroyAllWindows()
                 break
@@ -139,6 +137,7 @@ def main(file_name, starting_value):
                 print(f"iteration {starting_value} saved")
                 starting_value += 1
                 df.drop(df.index, inplace=True)
+                print("Iteration ", starting_value)
                    
         keys = key_check()
         if 'T' in keys:
