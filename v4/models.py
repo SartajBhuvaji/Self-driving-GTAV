@@ -6,6 +6,7 @@ from tflearn.layers.core import input_data, dropout, fully_connected
 from tflearn.layers.estimator import regression
 from tflearn.layers.normalization import local_response_normalization
 from tflearn.layers.merge_ops import merge
+import cv2
 
 
 def sartajnet_with_attention(width, height, lr, attention_map_shape=None):
@@ -20,6 +21,9 @@ def sartajnet_with_attention(width, height, lr, attention_map_shape=None):
   network = layers.Conv2D(256, kernel_size=5, activation="relu")(network)
   network = layers.MaxPooling2D(pool_size=3, strides=2)(network)
   network = layers.BatchNormalization()(network)
+
+  # Cropping image using  attention_map_shape = [[0,80],[0,100], [20,100],[20,80]]
+
 
   # Define the attention branch
   attention_branch = input_data(shape=[None, *attention_map_shape, 1], name='attention_map_input')

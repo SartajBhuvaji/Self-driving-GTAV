@@ -4,10 +4,10 @@ import numpy as np
 from grabscreen import grab_screen
 from tqdm import tqdm
 from collections import deque
-from models import inception_v3 as googlenet
+from models import sartajnet_with_attention
 from random import shuffle
 from alexnet import alexnet
-
+import tensorboard
 
 FILE_I_END = 1860
 
@@ -21,8 +21,7 @@ PREV_MODEL = ''
 LOAD_MODEL = True
 
 #model = googlenet(WIDTH, HEIGHT, 3, LR, output=9, model_name=MODEL_NAME)
-model = alexnet(WIDTH, HEIGHT, LR)
-
+model = sartajnet_with_attention(WIDTH, HEIGHT, 3, LR, output=9, model_name=MODEL_NAME)
 
 train_data = np.load('training_data_raw.npy', allow_pickle=True)
 train = train_data[:-50]
