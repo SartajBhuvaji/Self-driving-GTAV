@@ -61,6 +61,11 @@ for data in train_data:
 
 print(len(w), len(s), len(a), len(d), len(wa), len(wd), len(sa), len(sd), len(nk))
 
+final_data = w + a + d
+shuffle(final_data)
+print(len(final_data))
+
+np.save('training_data_raw.npy', final_data)
 
 
 # forwards = forwards[:len(lefts)][:len(rights)]
