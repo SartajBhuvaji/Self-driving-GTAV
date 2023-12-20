@@ -19,7 +19,7 @@ MODEL_NAME = ''
 PREV_MODEL = ''
 LOAD_MODEL = True
 
-model = googlenet(WIDTH, HEIGHT, 3, LR, output=9, model_name=MODEL_NAME)
+#model = googlenet(WIDTH, HEIGHT, 3, LR, output=9, model_name=MODEL_NAME)
 
 if LOAD_MODEL:
     model.load(PREV_MODEL)

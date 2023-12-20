@@ -8,6 +8,58 @@ from tflearn.layers.normalization import local_response_normalization
 from tflearn.layers.merge_ops import merge
 
 
+def sartajnet_with_attention(width, height, lr, attention_map_shape=None):
+#   (width, height, lr, attention_map_shape=None):
+    # network_input = input_data(shape=[None, width, height, 1], name='input')
+
+  # Define the main AlexNet branch
+  network = layers.Input(shape=(width, height, 1), name="image")
+  network = layers.Conv2D(96, kernel_size=11, strides=4, activation="relu")(network)
+  network = layers.MaxPooling2D(pool_size=3, strides=2)(network)
+  network = layers.BatchNormalization()(network)
+  network = layers.Conv2D(256, kernel_size=5, activation="relu")(network)
+  network = layers.MaxPooling2D(pool_size=3, strides=2)(network)
+  network = layers.BatchNormalization()(network)
+
+  # Define the attention branch
+  attention_branch = input_data(shape=[None, *attention_map_shape, 1], name='attention_map_input')
+  x = layers.Dense(32, activation="relu")(attention_branch)
+  x = layers.Dense(16, activation="relu")(x)
+  attention_map = layers.UpSampling2D(size=(50, 50))(x)  # Upsample to feature map size (50x50)
+
+#   attention_branch = layers.Input(shape=(2,), name="map_coordinates")
+#   x = layers.Dense(32, activation="relu")(attention_branch)
+#   x = layers.Dense(16, activation="relu")(x)
+#   attention_map = layers.UpSampling2D(size=(50, 50))(x)  # Upsample to feature map size (50x50)
+
+  # Apply attention to feature maps
+  masked_features = network * attention_map
+
+  # Continue the network with masked features
+  network = layers.Conv2D(384, kernel_size=3, activation="relu")(masked_features)
+  network = layers.Conv2D(384, kernel_size=3, activation="relu")(network)
+  network = layers.Conv2D(256, kernel_size=3, activation="relu")(network)
+  network = layers.MaxPooling2D(pool_size=3, strides=2)(network)
+  network = layers.BatchNormalization()(network)
+  network = layers.Flatten()(network)
+  network = layers.Dense(256, activation="tanh")(network) #4096
+  network = layers.Dropout(0.5)(network)
+  network = layers.Dense(256, activation="tanh")(network) # 4096
+  network = layers.Dropout(0.5)(network)
+  network = fully_connected(network, 9, activation='softmax')
+  network = regression(network, optimizer='momentum',
+                         loss='categorical_crossentropy',
+                         learning_rate=lr, name='targets')
+
+  model = tflearn.DNN(network, checkpoint_path='model_sartajnet_with_attention',
+                        max_checkpoints=1, tensorboard_verbose=2, tensorboard_dir='log')
+
+  # Define the model and compile it
+#   model = models.Model(inputs=[network, attention_branch], outputs=network, name="alexnet_with_attention")
+#   model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+
+  return model
+
 def resnext(width, height, frame_count, lr, output=9, model_name = 'sentnet_color.model'):
     net = input_data(shape=[None, width, height, 3], name='input')
     net = tflearn.conv_2d(net, 16, 3, regularizer='L2', weight_decay=0.0001)
