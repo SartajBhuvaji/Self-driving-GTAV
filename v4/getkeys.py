@@ -23,6 +23,7 @@ def key_check():
         else:
             if wapi.GetAsyncKeyState(ord(key_combination)):
                 keys.append(key)
+    #print(keys)            
     return keys
 
  
