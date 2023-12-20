@@ -11,6 +11,7 @@ key_combinations = {
     'WD': 'W+D',
     'SA': 'S+A',
     'SD': 'S+D',
+    'T': 'T',
 }
 
 def key_check():
