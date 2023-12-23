@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 import time
 
-training_data = np.load('training_data-1.npy', allow_pickle=True)
+training_data = np.load(r'training_data-74.npy', allow_pickle=True)
 mask = False #True
 
 def roi(img, vertices):

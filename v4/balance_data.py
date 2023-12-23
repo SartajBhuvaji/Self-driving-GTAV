@@ -5,7 +5,7 @@ import pandas as pd
 from collections import Counter
 from random import shuffle
 
-train_data = np.load('training_data-1.npy', allow_pickle=True)  
+train_data = np.load(r'Training Data/training_data-1.npy', allow_pickle=True)  
 
 df = pd.DataFrame(train_data)
 print(df.head())
