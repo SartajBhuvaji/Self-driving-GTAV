@@ -5,6 +5,7 @@
 - File Count : 100
 - Size : 1.81 GB/file
 - Total Size : 181 GB
+- Total Frames : 500,000
 
 ### Data Count (1-100)
 ```
@@ -39,3 +40,8 @@
 - Weather Conditions : Mostly Sunny
 - Time of Day : Day, Night
 - Rain : Some
+
+### Note
+- Remove `NONE` while processing the data
+- Check `training_data_count_001-100.csv` for detailed count
+- Check `training_data_stats.py` for more info

@@ -1,4 +1,4 @@
-# Check Training Data
+# training_data_stats.py
 import cv2
 import numpy as np
 import time
