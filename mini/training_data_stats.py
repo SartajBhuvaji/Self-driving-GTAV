@@ -1,4 +1,4 @@
-# training_data_stats.py
+#training_data_stats.py
 import cv2
 import numpy as np
 import time
@@ -8,7 +8,7 @@ import pandas as pd
 def get_count_choices(a,b):
     total_count_choices = Counter()
     for i in range(a,b):
-        training_data = np.load(f'training_data-{i}.npy', allow_pickle=True)
+        training_data = np.load(f'training_data-mini.npy', allow_pickle=True)
         choices = [str(data[1]) for data in training_data]
 
         total_count_choices.update(choices)
@@ -28,7 +28,7 @@ def get_count_choices_per_file(a,b):
                         '[0, 0, 0, 0, 0, 0, 0, 0, 1]':'NK',        
                         'None':'NONE'}
     for i in range(a,b):
-        training_data = np.load(f'training_data-{i}.npy', allow_pickle=True)
+        training_data = np.load(f'training_data-mini.npy', allow_pickle=True)
         choice = [str(data[1]) for data in training_data]
         count_choices = Counter(choice)
         count_choices_dict = dict(count_choices)
@@ -79,22 +79,21 @@ def display_training_data(n):
 
 if __name__ == "__main__":
     start_time = time.time()
-    #get_count_choices(101,201)
-    get_count_choices_per_file(101,201)
-    #display_training_data(20)
+    #get_count_choices(1,2)
+    get_count_choices_per_file(1,2)
+    #display_training_data('mini')
     print(f'Elapsed time: {time.time() - start_time} seconds')
 
 # Output:
 '''
- Image Resolution : (270, 480, 3)
- 'W':  [1, 0, 0, 0, 0, 0, 0, 0, 0] : 359025
- 'S':  [0, 1, 0, 0, 0, 0, 0, 0, 0] : 2834
- 'A':  [0, 0, 1, 0, 0, 0, 0, 0, 0] : 11025
- 'D':  [0, 0, 0, 1, 0, 0, 0, 0, 0] : 9639
- 'WA': [0, 0, 0, 0, 1, 0, 0, 0, 0] : 31896
- 'WD': [0, 0, 0, 0, 0, 1, 0, 0, 0] : 29756
- 'SA': [0, 0, 0, 0, 0, 0, 1, 0, 0] : 1742
- 'SD': [0, 0, 0, 0, 0, 0, 0, 1, 0] : 2461
- 'NK': [0, 0, 0, 0, 0, 0, 0, 0, 1] : 51313
-  NONE : 309 
-  '''
+'W':  [1, 0, 0, 0, 0, 0, 0, 0, 0] : 3627
+'S':  [0, 1, 0, 0, 0, 0, 0, 0, 0] : 50
+'A':  [0, 0, 1, 0, 0, 0, 0, 0, 0] : 104
+'D':  [0, 0, 0, 1, 0, 0, 0, 0, 0] : 106
+'WA': [0, 0, 0, 0, 1, 0, 0, 0, 0] : 364
+'WD': [0, 0, 0, 0, 0, 1, 0, 0, 0] : 416
+'SA': [0, 0, 0, 0, 0, 0, 1, 0, 0] : 35
+'SD': [0, 0, 0, 0, 0, 0, 0, 1, 0] : 47
+'NK': [0, 0, 0, 0, 0, 0, 0, 0, 1] : 248
+NONE : 3 
+'''    
