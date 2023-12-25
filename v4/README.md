@@ -4,7 +4,7 @@
 - Dimension : (270, 480, 3)
 - File Count : 100
 - Size : 1.81 GB/file
-- Total Data Size : 326 GB 
+- Total Data Size : 362 GB 
 
 ### Data Set sizes
 #### Mini : 
