@@ -5,6 +5,7 @@
 - File Count : 100
 - Size : 1.81 GB/file
 - Total Data Size : 362 GB 
+- Total Frames : 1 Million
 
 ### Data Set sizes
 #### Mini : 
@@ -89,5 +90,6 @@
 
 ### Note
 - Remove `NONE` while processing the data
+- Use the `mini` dataset for initial setup and testing
 - Check `training_data_count_001-100.csv` & `training_data_count_101-200.csv` for detailed count
 - Check `training_data_stats.py` for more info
