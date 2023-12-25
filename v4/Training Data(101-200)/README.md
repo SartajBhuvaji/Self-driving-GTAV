@@ -43,5 +43,5 @@
 
 ### Note
 - Remove `NONE` while processing the data
-- Check `training_data_count_001-100.csv` for detailed count
+- Check `training_data_count_101-200.csv` for detailed count
 - Check `training_data_stats.py` for more info
