@@ -17,7 +17,7 @@ def foo(a,b):
     MODEL_NAME = 'alexnet_color_4096dense'
     LOG_DIR = 'logs'
 
-    for ep in range(1): # For all epochs 
+    for _ in range(1): # For all epochs 
         for v in range(a,b): # Load all 5 versions of the data # 3,4
             train_data = np.load(f'cleaned_data/balanced_data-{v}.npy', allow_pickle=True)
 
@@ -62,9 +62,7 @@ def foo(a,b):
             del model
             gc.collect
 
-
-
-foo(4,5)
+foo(5,6)
 # a = 4
 # b = 5
 # for _ in range(3):
@@ -78,6 +76,5 @@ foo(4,5)
 #     if a == 5:
 #         a = 1
 #         b = 2
-
 
 # W tensorflow/core/common_runtime/bfc_allocator.cc:290] Allocator (GPU_0_bfc) ran out of memory trying to allocate 1.42GiB with freed_by_count=0. The caller indicates that this is not a failure, but this may mean that there could be performance gains if more memory were available.
