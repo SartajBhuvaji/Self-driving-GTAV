@@ -5,7 +5,7 @@ import pandas as pd
 from collections import Counter
 from random import shuffle
 
-train_data = np.load(r'Training Data/training_data-1.npy', allow_pickle=True)  
+train_data = np.load(r'C:\Local Disk D\gtav\self-driving_GTAV\mini\training_data-mini.npy', allow_pickle=True)  
 
 df = pd.DataFrame(train_data)
 print(df.head())
@@ -65,7 +65,12 @@ final_data = w + a + d
 shuffle(final_data)
 print(len(final_data))
 
-np.save('training_data_raw.npy', final_data)
+# Flatten the final_data list
+flattened_data = [item for sublist in final_data for item in sublist]
+
+# Save the flattened data
+np.save('training_data_raw.npy', flattened_data)
+print('done')
 
 
 # forwards = forwards[:len(lefts)][:len(rights)]

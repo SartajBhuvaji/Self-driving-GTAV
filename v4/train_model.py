@@ -1,44 +1,177 @@
-import os, cv2
-import pandas as pd
+# train_model.py
+
 import numpy as np
-from grabscreen import grab_screen
-from tqdm import tqdm
-from collections import deque
-from models import sartajnet_with_attention
-from random import shuffle
-from alexnet import alexnet
+from models import alexnet
 import tensorboard
-
-FILE_I_END = 1860
-
-WIDTH = 480
-HEIGHT = 270
+WIDTH = 160
+HEIGHT = 120
 LR = 1e-3
 EPOCHS = 1
+#MODEL_NAME = 'pygta5-car-fast-{}-{}-{}-epochs-300K-data.model'.format(LR, 'alexnetv2',EPOCHS)
+MODEL_NAME = 'alexnet_color_30'
 
-MODEL_NAME = ''
-PREV_MODEL = ''
-LOAD_MODEL = True
 
-#model = googlenet(WIDTH, HEIGHT, 3, LR, output=9, model_name=MODEL_NAME)
-model = sartajnet_with_attention(WIDTH, HEIGHT, 3, LR, output=9, model_name=MODEL_NAME)
+##def alexnet(width, height, lr, input= 1, output=9, model_name = 'alexnet_color_30'):
+#model = alexnet(WIDTH, HEIGHT, LR, input=1, output=9, model_name=MODEL_NAME)
+data = np.load(r'C:\Local Disk D\gtav\self-driving_GTAV\mini\training_data-mini.npy', allow_pickle=True)
 
-train_data = np.load('training_data_raw.npy', allow_pickle=True)
-train = train_data[:-50]
-test = train_data[-50:]
+print("Data shape: ", data.shape)
 
-X = np.array([i[0] for i in train]).reshape(-1, WIDTH, HEIGHT, 3)
-Y = [i[1] for i in train]
+X = np.array([i[0] for i in data]).reshape(-1, WIDTH, HEIGHT, 1)
+Y = np.array([np.array(i[1]) for i in data])  # Convert Y to a numpy array
 
-test_x = np.array([i[0] for i in test]).reshape(-1, WIDTH, HEIGHT, 3)
-test_y = [i[1] for i in test]
+print("X[0] ", X[0])
+print("Y[0] ", Y[0])
 
-model.fit({'input': X}, {'targets': Y}, n_epoch = 1, validation_set = ({'input': test_x}, {'targets': test_y}),
-snapshot_step = 2, show_metric = True, run_id = MODEL_NAME)
+# Split X and Y into training and testing data
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
 
-# if LOAD_MODEL:
-#     model.load(PREV_MODEL)
-#     print('We have loaded a previous model!!!!')
+print("X_train shape: ", X_train.shape)
+print("Y_train shape: ", Y_train.shape)
+print("X_test shape: ", X_test.shape)
+print("Y_test shape: ", Y_test.shape)
+
+
+del data
+del X
+del Y
+
+
+#model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+#model.fit({'input': X}, {'targets': Y}, n_epoch=1, validation_set=({'input': test_x}, {'targets': test_y}),run_id=MODEL_NAME, show_metric=True)
+
+#model.save("model.h5")
+
+# hm_data = 1
+# for i in range(EPOCHS):
+#     for i in range(1,hm_data+1):
+#         # train_data = np.load('training_data_balanced.npy'.format(i), allow_pickle=True)
+
+#         # train = train_data[:-100]
+#         # test = train_data[-100:]
+
+#         # X = np.array([i[0] for i in train]).reshape(-1,WIDTH,HEIGHT,1)
+#         # Y = [i[1] for i in train]
+
+#         # test_x = np.array([i[0] for i in test]).reshape(-1,WIDTH,HEIGHT,1)
+#         # test_y = [i[1] for i in test]
+
+#         model.fit({'input': X}, {'targets': Y}, n_epoch=1, validation_set=({'input': test_x}, {'targets': test_y}), 
+#             snapshot_step=500, show_metric=True, run_id=MODEL_NAME)
+
+#         #model.save(MODEL_NAME)
+
+# model.save("model.h5")
+
+
+# tensorboard --logdir=foo:C:/path/to/log
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import os, cv2
+# import pandas as pd
+# import numpy as np
+# from grabscreen import grab_screen
+# from tqdm import tqdm
+# from collections import deque
+# from models import sartajnet_with_attention
+# from random import shuffle
+# from alexnet import alexnet
+# import tensorboard
+
+# FILE_I_END = 1860
+
+# WIDTH = 480
+# HEIGHT = 270
+# LR = 1e-3
+# EPOCHS = 1
+
+# MODEL_NAME = ''
+# PREV_MODEL = ''
+# LOAD_MODEL = True
+
+# #model = googlenet(WIDTH, HEIGHT, 3, LR, output=9, model_name=MODEL_NAME)
+# model = sartajnet_with_attention(WIDTH, HEIGHT, 3, LR, output=9, model_name=MODEL_NAME)
+
+# train_data = np.load('../mini/training_data-mini.npy', allow_pickle=True)
+# train = train_data[:-50]
+# test = train_data[-50:]
+
+# X = np.array([i[0] for i in train]).reshape(-1, WIDTH, HEIGHT, 3)
+# Y = [i[1] for i in train]
+
+# test_x = np.array([i[0] for i in test]).reshape(-1, WIDTH, HEIGHT, 3)
+# test_y = [i[1] for i in test]
+
+# model.fit({'input': X}, {'targets': Y}, n_epoch = 1, validation_set = ({'input': test_x}, {'targets': test_y}),
+# snapshot_step = 2, show_metric = True, run_id = MODEL_NAME)
+
+# # if LOAD_MODEL:
+# #     model.load(PREV_MODEL)
+# #     print('We have loaded a previous model!!!!')
 
 # # iterates through the training files
 # for e in range(EPOCHS):
@@ -87,4 +220,4 @@ snapshot_step = 2, show_metric = True, run_id = MODEL_NAME)
 #             print(e)
 
 
-# #tensorboard --logdir=foo:J:/phase10-code/log
+# # #tensorboard --logdir=foo:J:/phase10-code/log
