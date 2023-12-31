@@ -30,7 +30,7 @@ print('test_y shape: ', len(test_y))
 # model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 model.fit({'input': X}, {'targets': Y}, n_epoch=1, validation_set=({'input': test_x}, {'targets': test_y}))
 
-model.save("model.h5")
+model.save(MODEL_NAME)
 
 # hm_data = 1
 # for i in range(EPOCHS):
