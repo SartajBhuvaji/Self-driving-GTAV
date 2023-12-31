@@ -637,7 +637,7 @@ def sentnet_v0(width, height, frame_count, lr, output=9):
     return model
     
 
-def alexnet_sartaj(width, height, lr, input= 1, output=9, model_name = 'alexnet_color_30'):
+def alexnet_sartaj(width, height, lr, input= 1, output=9, model_name = 'alexnet_color_4096'):
     network = input_data(shape=[None, width, height, input], name='input')
     network = conv_2d(network, 96, 11, strides=4, activation='relu')
     network = max_pool_2d(network, 3, strides=2)
@@ -650,9 +650,9 @@ def alexnet_sartaj(width, height, lr, input= 1, output=9, model_name = 'alexnet_
     network = conv_2d(network, 256, 3, activation='relu')
     network = max_pool_2d(network, 3, strides=2)
     network = local_response_normalization(network)
-    network = fully_connected(network, 1028, activation='tanh') #4096
+    network = fully_connected(network, 4096, activation='tanh') #4096
     network = dropout(network, 0.5)
-    network = fully_connected(network, 1028, activation='tanh')
+    network = fully_connected(network, 4096, activation='tanh')
     network = dropout(network, 0.5)
     network = fully_connected(network, output, activation='softmax')
     network = regression(network, optimizer='momentum',
