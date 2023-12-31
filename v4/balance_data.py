@@ -1,6 +1,7 @@
 # balance_data.py
 
 import numpy as np
+print(np.__version__)
 import pandas as pd
 from collections import Counter
 from random import shuffle
@@ -65,11 +66,7 @@ final_data = w + a + d
 shuffle(final_data)
 print(len(final_data))
 
-# Flatten the final_data list
-flattened_data = [item for sublist in final_data for item in sublist]
-
-# Save the flattened data
-np.save('training_data_raw.npy', flattened_data)
+np.save('training_data_raw_2.npy', final_data)
 print('done')
 
 

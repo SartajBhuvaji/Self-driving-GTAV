@@ -637,7 +637,6 @@ def sentnet_v0(width, height, frame_count, lr, output=9):
     return model
     
 
-
 def alexnet_sartaj(width, height, lr, input= 1, output=9, model_name = 'alexnet_color_30'):
     network = input_data(shape=[None, width, height, input], name='input')
     network = conv_2d(network, 96, 11, strides=4, activation='relu')

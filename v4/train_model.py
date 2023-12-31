@@ -1,45 +1,56 @@
 # train_model.py
 
 import numpy as np
-from models import alexnet
+from models import alexnet_sartaj
 import tensorboard
-WIDTH = 160
-HEIGHT = 120
+WIDTH = 480
+HEIGHT = 270
 LR = 1e-3
 EPOCHS = 1
 #MODEL_NAME = 'pygta5-car-fast-{}-{}-{}-epochs-300K-data.model'.format(LR, 'alexnetv2',EPOCHS)
-MODEL_NAME = 'alexnet_color_30'
+MODEL_NAME = 'alexnet_color_30_2'
 
 
 ##def alexnet(width, height, lr, input= 1, output=9, model_name = 'alexnet_color_30'):
-#model = alexnet(WIDTH, HEIGHT, LR, input=1, output=9, model_name=MODEL_NAME)
-data = np.load(r'C:\Local Disk D\gtav\self-driving_GTAV\mini\training_data-mini.npy', allow_pickle=True)
+model = alexnet_sartaj(WIDTH, HEIGHT, LR, input=3, output=9, model_name=MODEL_NAME)
+# data = np.load(r'training_data_raw.npy', allow_pickle=True)
 
-print("Data shape: ", data.shape)
+# X = np.array([i[0] for i in data]).reshape(-1, WIDTH, HEIGHT, 1)
+# Y = np.array([np.array(i[1]) for i in data])  # Convert Y to a numpy array
 
-X = np.array([i[0] for i in data]).reshape(-1, WIDTH, HEIGHT, 1)
-Y = np.array([np.array(i[1]) for i in data])  # Convert Y to a numpy array
+# print("X shape: ", X.shape)
+# print("Y shape: ", Y.shape)
 
-print("X[0] ", X[0])
-print("Y[0] ", Y[0])
+# print("Data shape: ", data.shape)
 
-# Split X and Y into training and testing data
-from sklearn.model_selection import train_test_split
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+# X = np.array([i[0] for i in data]).reshape(-1, WIDTH, HEIGHT, 1)
+# Y = np.array([np.array(i[1]) for i in data])  # Convert Y to a numpy array
 
-print("X_train shape: ", X_train.shape)
-print("Y_train shape: ", Y_train.shape)
-print("X_test shape: ", X_test.shape)
-print("Y_test shape: ", Y_test.shape)
+# print("X[0] ", X[0])
+# print("Y[0] ", Y[0])
+
+# # Split X and Y into training and testing data
+# from sklearn.model_selection import train_test_split
+# X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+
+# print("X_train shape: ", X_train.shape)
+# print("Y_train shape: ", Y_train.shape)
+# print("X_test shape: ", X_test.shape)
+# print("Y_test shape: ", Y_test.shape)
 
 
-del data
-del X
-del Y
+# del data
+# del X
+# del Y
 
+
+X_train = np.load(r'C:\Local Disk D\gtav\self-driving_GTAV\mini\X_train.npy', allow_pickle=True)
+Y_train = np.load(r'C:\Local Disk D\gtav\self-driving_GTAV\mini\y_train.npy', allow_pickle=True)
+X_test = np.load(r'C:\Local Disk D\gtav\self-driving_GTAV\mini\X_test.npy', allow_pickle=True)
+Y_test = np.load(r'C:\Local Disk D\gtav\self-driving_GTAV\mini\y_test.npy', allow_pickle=True)
 
 #model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-#model.fit({'input': X}, {'targets': Y}, n_epoch=1, validation_set=({'input': test_x}, {'targets': test_y}),run_id=MODEL_NAME, show_metric=True)
+model.fit({'input': X_train}, {'targets': Y_train}, n_epoch=1, validation_set=({'input': X_test}, {'targets': Y_test}),run_id=MODEL_NAME, show_metric=True)
 
 #model.save("model.h5")
 
