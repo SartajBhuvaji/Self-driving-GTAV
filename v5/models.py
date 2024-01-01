@@ -2,7 +2,7 @@
 
 import tflearn
 from tflearn.layers.conv import conv_2d, max_pool_2d,avg_pool_2d, conv_3d, max_pool_3d, avg_pool_3d
-from tflearn.layers.core import input_data, dropout, fully_connected, 
+from tflearn.layers.core import input_data, dropout, fully_connected
 from tflearn.layers.estimator import regression
 from tflearn.layers.normalization import local_response_normalization
 from tflearn.layers.merge_ops import merge
@@ -655,7 +655,7 @@ def alexnet_sartaj(width, height, lr, input= 1, output=9, model_name = 'alexnet_
 
     return model
 
-def lstm_alexnet(width, height, lr, sequence_length=10, input=1, output=9, model_name='lstm_alexnet_color_4096'):
+def lstm_alexnet(width, height, lr, sequence_length=10, input=3, output=9, model_name='lstm_alexnet_color_4096'):
     network = input_data(shape=[None, sequence_length, width, height, input], name='input')
     
     network = lstm(network, 96, activation='relu', return_seq=True)
