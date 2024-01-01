@@ -18,9 +18,9 @@ def foo():
     LOG_DIR = 'log'
 
     train_data = np.load(f'cleaned_data/balanced_data_lstm-1.npy', allow_pickle=True)
-    for i in range(2,6):
-        train_data_part = np.load(f'cleaned_data/balanced_data_lstm-{i}.npy', allow_pickle=True)
-        train_data = np.concatenate((train_data, train_data_part), axis=0)
+    # for i in range(2,6):
+    #     train_data_part = np.load(f'cleaned_data/balanced_data_lstm-{i}.npy', allow_pickle=True)
+    #     train_data = np.concatenate((train_data, train_data_part), axis=0)
 
     # change shape to (480, 270, 3)
     for i in range(len(train_data)):
@@ -35,7 +35,7 @@ def foo():
     print(y.shape)
 
     #Split data into train and test
-    X_train, X_test, y_train, y_test = train_test_split(X, y , test_size=0.25, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, shuffle=False)
 
     # Clear the memory
     del train_data
@@ -43,7 +43,7 @@ def foo():
     del y
 
     ## TRAINING THE MODEL
-    model = lstm_alexnet(WIDTH, HEIGHT, LR, sequence_length=10, input=COLORS, output=9, model_name=MODEL_NAME)
+    model = lstm_alexnet(WIDTH, HEIGHT, LR, input=COLORS, output=9, model_name=MODEL_NAME)
 
     # Check if model is already trained, if so lead if before training
     if os.path.exists(f'{MODEL_NAME}.meta'):

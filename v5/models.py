@@ -7,6 +7,7 @@ from tflearn.layers.estimator import regression
 from tflearn.layers.normalization import local_response_normalization
 from tflearn.layers.merge_ops import merge
 from tflearn.layers.recurrent import lstm
+import tflearn.layers.core as core
 
 # Enable mixed precision
 # from tensorflow.keras.mixed_precision import experimental as mixed_precision
@@ -633,14 +634,17 @@ def alexnet_sartaj(width, height, lr, input= 1, output=9, model_name = 'alexnet_
     network = conv_2d(network, 96, 11, strides=4, activation='relu')
     network = max_pool_2d(network, 3, strides=2)
     network = local_response_normalization(network)
+
     network = conv_2d(network, 256, 5, activation='relu')
     network = max_pool_2d(network, 3, strides=2)
     network = local_response_normalization(network)
+
     network = conv_2d(network, 384, 3, activation='relu')
     network = conv_2d(network, 384, 3, activation='relu')
     network = conv_2d(network, 256, 3, activation='relu')
     network = max_pool_2d(network, 3, strides=2)
     network = local_response_normalization(network)
+
     network = fully_connected(network, 4096, activation='tanh') #4096
     network = dropout(network, 0.5)
     network = fully_connected(network, 4096, activation='tanh')
@@ -655,32 +659,32 @@ def alexnet_sartaj(width, height, lr, input= 1, output=9, model_name = 'alexnet_
 
     return model
 
-def lstm_alexnet(width, height, lr, sequence_length=10, input=3, output=9, model_name='lstm_alexnet_color_4096'):
-    network = input_data(shape=[None, sequence_length, width, height, input], name='input')
-    
-    network = lstm(network, 96, activation='relu', return_seq=True)
-    network = local_response_normalization(network)
-    network = lstm(network, 256, activation='relu', return_seq=True)
-    network = local_response_normalization(network)
-    network = lstm(network, 384, activation='relu', return_seq=True)
-    network = lstm(network, 384, activation='relu', return_seq=True)
-    network = lstm(network, 256, activation='relu', return_seq=True)
-    
-    # Flatten LSTM output
-    network = tflearn.flatten(network)
-    
-    network = fully_connected(network, 4096, activation='tanh')
-    network = dropout(network, 0.5)
-    network = fully_connected(network, 4096, activation='tanh')
+def lstm_alexnet(width, height, lr, input=3, output=9, model_name='conv_lstm'):
+    network = input_data(shape=[None, width, height, input], name='input')  # Original input shape
+
+    # Convolutional layers
+    network = conv_2d(network, 64, 3, activation='relu')
+    network = max_pool_2d(network, 2)
+    # network = conv_2d(network, 64, 3, activation='relu')
+    # network = max_pool_2d(network, 2)
+
+    # Reshape for LSTM
+    network = core.reshape(network, [-1, 1, network.get_shape().as_list()[1] * network.get_shape().as_list()[2] * network.get_shape().as_list()[3]])
+    print("Network shape before LSTM Layers: ",network.get_shape())
+    # LSTM layers
+    network = lstm(network, 128, return_seq=True)
+    network = lstm(network, 64)
+
+    # Output layers
+    network = fully_connected(network, 1028, activation='tanh')
     network = dropout(network, 0.5)
     network = fully_connected(network, output, activation='softmax')
-    
-    network = regression(network, optimizer='momentum',
-                         loss='categorical_crossentropy',
-                         learning_rate=lr, name='targets')
+
+    network = regression(network, optimizer='adam',
+                       loss='categorical_crossentropy',
+                       learning_rate=lr, name='targets')
 
     model = tflearn.DNN(network, checkpoint_path=model_name,
-                        max_checkpoints=1, tensorboard_verbose=1, tensorboard_dir='log')
+                     max_checkpoints=1, tensorboard_verbose=1, tensorboard_dir='log')
 
-    return model    
-
+    return model
