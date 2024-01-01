@@ -402,27 +402,6 @@ def inception_v3_3d(width, height, frame_count, lr, output=9, model_name = 'sent
 
 
 
-
-
-
-def sentnet_LSTM_gray(width, height, frame_count, lr, output=9):
-    network = input_data(shape=[None, width, height], name='input')
-    #network = tflearn.input_data(shape=[None, 28, 28], name='input')
-    network = tflearn.lstm(network, 128, return_seq=True)
-    network = tflearn.lstm(network, 128)
-    network = tflearn.fully_connected(network, 9, activation='softmax')
-    network = tflearn.regression(network, optimizer='adam',
-    loss='categorical_crossentropy', name="output1")
-
-    model = tflearn.DNN(network, checkpoint_path='model_lstm',
-                        max_checkpoints=1, tensorboard_verbose=0, tensorboard_dir='log')
-
-    return model
-
-
-
-
-
 def sentnet_color(width, height, frame_count, lr, output=9, model_name = 'sentnet_color.model'):
     network = input_data(shape=[None, width, height,3, 1], name='input')
     network = conv_3d(network, 96, 11, strides=4, activation='relu')
@@ -675,4 +654,33 @@ def alexnet_sartaj(width, height, lr, input= 1, output=9, model_name = 'alexnet_
                         max_checkpoints=1, tensorboard_verbose=1, tensorboard_dir='log')
 
     return model
+
+def lstm_alexnet(width, height, lr, sequence_length=10, input=1, output=9, model_name='lstm_alexnet_color_4096'):
+    network = input_data(shape=[None, sequence_length, width, height, input], name='input')
+    
+    network = lstm(network, 96, activation='relu', return_seq=True)
+    network = local_response_normalization(network)
+    network = lstm(network, 256, activation='relu', return_seq=True)
+    network = local_response_normalization(network)
+    network = lstm(network, 384, activation='relu', return_seq=True)
+    network = lstm(network, 384, activation='relu', return_seq=True)
+    network = lstm(network, 256, activation='relu', return_seq=True)
+    
+    # Flatten LSTM output
+    network = tflearn.flatten(network)
+    
+    network = fully_connected(network, 4096, activation='tanh')
+    network = dropout(network, 0.5)
+    network = fully_connected(network, 4096, activation='tanh')
+    network = dropout(network, 0.5)
+    network = fully_connected(network, output, activation='softmax')
+    
+    network = regression(network, optimizer='momentum',
+                         loss='categorical_crossentropy',
+                         learning_rate=lr, name='targets')
+
+    model = tflearn.DNN(network, checkpoint_path=model_name,
+                        max_checkpoints=1, tensorboard_verbose=1, tensorboard_dir='log')
+
+    return model    
 

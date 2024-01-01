@@ -14,12 +14,17 @@ def foo(a,b):
     HEIGHT = 270
     LR = 1e-3
     COLORS = 3
-    MODEL_NAME = 'alexnet_color_4096dense'
+    MODEL_NAME = 'alexnet_color_4096dense_v3'
     LOG_DIR = 'logs'
+
+    train_data = np.load(f'cleaned_data/balanced_data-1.npy', allow_pickle=True)
+    for i in range(2,6):
+        train_data_part = np.load(f'cleaned_data/balanced_data-{i}.npy', allow_pickle=True)
+        train_data = np.concatenate((train_data, train_data_part), axis=0)
 
     for _ in range(1): # For all epochs 
         for v in range(a,b): # Load all 5 versions of the data # 3,4
-            train_data = np.load(f'cleaned_data/balanced_data-{v}.npy', allow_pickle=True)
+            # train_data = np.load(f'cleaned_data/balanced_data-{v}.npy', allow_pickle=True)
 
             # change shape to (480, 270, 3)
             for i in range(len(train_data)):
@@ -32,7 +37,6 @@ def foo(a,b):
 
             print(X.shape)
             print(y.shape)
-
 
             #Split data into train and test
             X_train, X_test, y_train, y_test = train_test_split(X, y , test_size=0.25, random_state=42)
@@ -55,7 +59,7 @@ def foo(a,b):
                 print('Model not found!')
                 print('Training new model...')    
 
-            model.fit({'input': X_train}, {'targets': y_train}, n_epoch=1, 
+            model.fit({'input': X_train}, {'targets': y_train}, n_epoch=5, 
                     validation_set=({'input': X_test}, {'targets': y_test}),
                     run_id=MODEL_NAME, show_metric=True)
             model.save(MODEL_NAME)
