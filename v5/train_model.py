@@ -60,7 +60,7 @@ def foo():
     del model
     gc.collect
 
-foo()
+#foo()
 # a = 4
 # b = 5
 # for _ in range(3):
@@ -76,3 +76,20 @@ foo()
 #         b = 2
 
 # W tensorflow/core/common_runtime/bfc_allocator.cc:290] Allocator (GPU_0_bfc) ran out of memory trying to allocate 1.42GiB with freed_by_count=0. The caller indicates that this is not a failure, but this may mean that there could be performance gains if more memory were available.
+    
+def bax():
+    EPOCHS = 5
+    WIDTH = 480
+    HEIGHT = 270
+    LR = 1e-3
+    COLORS = 3
+    MODEL_NAME = 'lstm_alexnet_color_4096_v1'
+    LOG_DIR = 'log'
+
+    #train_data = np.load(f'cleaned_data/balanced_data_lstm-1.npy', allow_pickle=True)
+    model = lstm_alexnet(WIDTH, HEIGHT, LR, input=COLORS, output=9, model_name=MODEL_NAME)
+
+    print(model.summary())
+
+
+bax()    
